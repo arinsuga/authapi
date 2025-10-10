@@ -1,0 +1,190 @@
+#!/bin/bash
+run_ls() {
+
+    clear
+    echo "✅ Vierifying Containers..."
+    docker ps -a
+
+    echo ""
+
+    echo "✅ Vierifying Images..."
+    docker images
+
+    echo ""
+    echo "============================================================================================================================"
+    echo ""
+
+    echo "✅ Vierifying Compose Containers..."
+    docker compose ps -a
+
+    echo ""
+
+    echo "✅ Vierifying Compose Images..."
+    docker compose images
+
+    echo ""
+}
+
+run_rm() {
+
+    echo "✅ ====== Removing Containers ======"
+    run_rmc
+    echo "✅ ====== Removing Images ======"
+    run_rmi
+
+}
+
+run_rma() {
+
+    echo "✅ ====== Removing Containers ======"
+    run_rmca
+    echo "✅ ====== Removing Images ======"
+    run_rmia
+
+}
+
+run_rmc() {
+
+    echo "✅ Removing Container authdev..."
+    docker rm authdev --force ; \
+
+    echo "✅ Vierifying Containers..."
+    docker ps -a
+
+}
+
+run_rmca() {
+
+    run_rmc
+
+    echo "✅ Removing Container nginx..."
+    docker rm nginx --force ; \
+
+    echo "✅ Removing Container mysqldb..."
+    docker rm mysqldb --force ; \
+
+    echo "✅ Removing Container phpmyadmin..."
+    docker rm phpmyadmin --force ; \
+
+    echo "✅ Vierifying Containers..."
+    docker ps -a
+}
+
+run_rmi() {
+
+    echo "✅ Removing Image authdev..."
+    docker rmi sugaprivate/authdev --force
+
+}
+
+run_rmia() {
+
+    run_rmi
+
+    echo "✅ Removing Image nginx..."
+    docker rmi sugaprivate/nginx --force
+
+    echo "✅ Removing Image mariadb..."
+    docker rmi sugaprivate/mariadb --force
+
+    echo "✅ Removing Image phpmyadmin..."
+    docker rmi sugaprivate/phpmyadmin --force
+
+    echo "✅ Vierifying Images..."
+    docker images
+
+}
+
+run_build() {
+
+    clear
+    echo "✅ Building Image authdev..."
+    docker build -f docker-auth-dev -t sugaprivate/authdev .
+
+}
+
+run_buildall() {
+
+    run_build
+
+    echo "✅ Building Image nginx..."
+    docker build -f docker-nginx -t sugaprivate/nginx .
+
+    echo "✅ Building Image mariadb..."
+    docker build -f docker-mariadb -t sugaprivate/mariadb .
+
+    echo "✅ Building Image phpmyadmin..."
+    docker build -f docker-phpmyadmin -t sugaprivate/phpmyadmin .
+
+    echo "✅ Vierifying..."
+    docker images
+
+}
+
+run_push() {
+
+    echo "✅ Push Image authdev to Container Register..."
+    docker push sugaprivate/authdev
+
+}
+
+run_pushall() {
+
+    run_push
+
+    echo "✅ Push Image nginx to Container Register..."
+    docker push sugaprivate/nginx
+
+    echo "✅ Push Image mariadb to Container Register..."
+    docker push sugaprivate/mariadb
+
+    echo "✅ Push Image phpmyadmin to Container Register..."
+    docker push sugaprivate/phpmyadmin
+
+}
+
+run_buildpush() {
+
+    echo "✅ Building Image..."
+    run_build
+
+    echo "✅ Push Image to Container Register..."
+    run_push
+
+    echo "✅ Vierifying Image..."
+    docker images
+
+}
+
+run_buildpushall() {
+
+    echo "✅ Building Image..."
+    run_buildall
+
+    echo "✅ Push Image to Container Register..."
+    run_pushall
+
+    echo "✅ Vierifying Image..."
+    docker images
+
+}
+
+case "$1" in
+  ls) run_ls ;;
+  rm) run_rm ;;
+  rma) run_rma ;;
+  rmc) run_rmc ;;
+  rmca) run_rmca ;;
+  rmi) run_rmi ;;
+  rmia) run_rmia ;;
+  b) run_build ;;
+  ba) run_buildall ;;
+  p) run_push ;;
+  pa) run_pushall ;;
+  bp) run_buildpush ;;
+  bpa) run_buildpushall ;;
+  *)
+    run_build
+    exit 1
+    ;;
+esac
