@@ -14,7 +14,7 @@ RUN adduser appbase
 
 # Set environment variables
 ENV HOME=/home/appbase \
-    APP_ENV=local \
+    APP_ENV=local APP_URL=http://localhost \
     DB_CONNECTION=mysql DB_HOST=127.0.0.1 DB_PORT=3306 \
     DB_DATABASE=DB_NAME DB_USERNAME=DB_USERNAME DB_PASSWORD=DB_PASSWORD \
     JWT_TTL=525600 JWT_REFRESH_TTL=525600
@@ -53,7 +53,7 @@ RUN chown -R appbase:appbase /var/www/html && \
 # Switch to app user ( appbase )
 USER appbase
 
-# Expose port
+# Expose port 9000
 EXPOSE 9000
 
 # Run entrypoint

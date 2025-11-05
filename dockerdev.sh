@@ -48,6 +48,9 @@ run_rmc() {
     echo "✅ Removing Container authdev..."
     docker rm authdev --force ; \
 
+    echo "✅ Removing Container authapi-authapi-service-1..."
+    docker rm authapi-authapi-service-1 --force ; \
+
     echo "✅ Vierifying Containers..."
     docker ps -a
 
@@ -57,8 +60,11 @@ run_rmca() {
 
     run_rmc
 
-    echo "✅ Removing Container nginx..."
-    docker rm nginx --force ; \
+    echo "✅ Removing Container nginx-compose..."
+    docker rm nginx-compose --force ; \
+
+    echo "✅ Removing Container nginx-kubernetes..."
+    docker rm nginx-kubernetes --force ; \
 
     echo "✅ Removing Container mysqldb..."
     docker rm mysqldb --force ; \
@@ -81,8 +87,11 @@ run_rmia() {
 
     run_rmi
 
-    echo "✅ Removing Image nginx..."
-    docker rmi sugaprivate/nginx --force
+    echo "✅ Removing Image nginx-compose..."
+    docker rmi sugaprivate/nginx-compose --force
+
+    echo "✅ Removing Image nginx-kubernetes..."
+    docker rmi sugaprivate/nginx-kubernetes --force
 
     echo "✅ Removing Image mariadb..."
     docker rmi sugaprivate/mariadb --force
@@ -107,8 +116,11 @@ run_buildall() {
 
     run_build
 
-    echo "✅ Building Image nginx..."
-    docker build -f docker-nginx -t sugaprivate/nginx .
+    echo "✅ Building Image nginx-compose..."
+    docker build -f docker-nginx-compose -t sugaprivate/nginx-compose .
+
+    echo "✅ Building Image nginx-kubernetes..."
+    docker build -f docker-nginx-kubernetes -t sugaprivate/nginx-kubernetes .
 
     echo "✅ Building Image mariadb..."
     docker build -f docker-mariadb -t sugaprivate/mariadb .
@@ -132,8 +144,11 @@ run_pushall() {
 
     run_push
 
-    echo "✅ Push Image nginx to Container Register..."
-    docker push sugaprivate/nginx
+    echo "✅ Push Image nginx-compose to Container Register..."
+    docker push sugaprivate/nginx-compose
+
+    echo "✅ Push Image nginx-kubernetes to Container Register..."
+    docker push sugaprivate/nginx-kubernetes
 
     echo "✅ Push Image mariadb to Container Register..."
     docker push sugaprivate/mariadb
