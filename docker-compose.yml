@@ -1,6 +1,6 @@
 services:
   authapi-service:
-    image: sugaprivate/authprod:latest
+    image: sugaprivate/authdev:latest
     # container_name: authdev
     environment:
       APP_ENV: ${APP_ENV}
@@ -10,8 +10,8 @@ services:
       DB_DATABASE: ${DB_DATABASE}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
-    # volumes:
-    #   - ./appbase:/var/www/html
+    volumes:
+      - ./authapi:/var/www/html:cached
     networks:
       - auth_net
     depends_on:
@@ -23,9 +23,10 @@ services:
     container_name: nginx
     ports:
       - "80:80"
-    # volumes:
-    #   - ./appbase:/var/www/html
-    #   - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    volumes:
+      - ./authapi:/var/www/html
+      - .env_authapi:/var/www/html/.env
+      - ./nginx/nginx-compose.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - authapi-service
     networks:

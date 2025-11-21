@@ -12,3 +12,5 @@ sed -i 's/\r$//' k8s/app-secret.yml
 sed -i 's/\r$//' k8s/db-statefulset.yml
 sed -i 's/\r$//' k8s/nginx-deployment.yml
 sed -i 's/\r$//' k8s/phpmyadmin-deployment.yml
+sed -i 's/\r$//' kubectl-remove.sh
+sed -i 's/\r$//' startdev.sh

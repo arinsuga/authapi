@@ -40,6 +40,8 @@ run_rma() {
     run_rmca
     echo "✅ ====== Removing Images ======"
     run_rmia
+    echo "✅ ====== Removing Docker Compose ======"
+    docker compose down --volumes --remove-orphans
 
 }
 
@@ -59,6 +61,9 @@ run_rmc() {
 run_rmca() {
 
     run_rmc
+
+    echo "✅ Removing Container nginx..."
+    docker rm nginx --force ; \
 
     echo "✅ Removing Container nginx-compose..."
     docker rm nginx-compose --force ; \
@@ -108,7 +113,7 @@ run_build() {
 
     clear
     echo "✅ Building Image authprod..."
-    docker build -f docker-auth-prod -t sugaprivate/authprod .
+    docker build -f docker-auth-prod -t sugaprivate/authprod:latest .
 
 }
 
@@ -117,16 +122,16 @@ run_buildall() {
     run_build
 
     echo "✅ Building Image nginx-compose..."
-    docker build -f docker-nginx-compose -t sugaprivate/nginx-compose .
+    docker build -f docker-nginx-compose -t sugaprivate/nginx-compose:latest .
 
     echo "✅ Building Image nginx-kubernetes..."
-    docker build -f docker-nginx-kubernetes -t sugaprivate/nginx-kubernetes .
+    docker build -f docker-nginx-kubernetes -t sugaprivate/nginx-kubernetes:latest .
 
     echo "✅ Building Image mariadb..."
-    docker build -f docker-mariadb -t sugaprivate/mariadb .
+    docker build -f docker-mariadb -t sugaprivate/mariadb:latest .
 
     echo "✅ Building Image phpmyadmin..."
-    docker build -f docker-phpmyadmin -t sugaprivate/phpmyadmin .
+    docker build -f docker-phpmyadmin -t sugaprivate/phpmyadmin:latest .
 
     echo "✅ Vierifying..."
     docker images

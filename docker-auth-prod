@@ -9,11 +9,11 @@ LABEL maintainer="Arin Suga <arinsuga@gmail.com>" \
       vendor="Arin Suga" \
       name="authprod"
 
-# Create app user ( appbase )
-RUN adduser appbase
+# Create app user ( authapi )
+RUN adduser authapi
 
 # Set environment variables
-ENV HOME=/home/appbase \
+ENV HOME=/home/authapi \
     APP_ENV=local APP_URL=http://localhost \
     DB_CONNECTION=mysql DB_HOST=127.0.0.1 DB_PORT=3306 \
     DB_DATABASE=DB_NAME DB_USERNAME=DB_USERNAME DB_PASSWORD=DB_PASSWORD \
@@ -26,9 +26,9 @@ ENV HOME=/home/appbase \
 WORKDIR /var/www/html
 
 # Copy Laravel app files
-COPY appbase/. /var/www/html
+COPY authapi/. /var/www/html
 # Copy .env
-COPY .env_appbase /var/www/html/.env
+COPY .env_authapi /var/www/html/.env
 # Copy wait-for-it.sh
 COPY wait-for-it.sh /usr/local/bin/wait-for-it.sh
 # Copy entrypoint.sh
@@ -44,14 +44,14 @@ RUN apt update && apt install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 # Set permissions    
-RUN chown -R appbase:appbase /var/www/html && \
-    chown appbase:appbase /usr/local/bin/entrypoint.sh && \
-    chown appbase:appbase /usr/local/bin/wait-for-it.sh && \
+RUN chown -R authapi:authapi /var/www/html && \
+    chown authapi:authapi /usr/local/bin/entrypoint.sh && \
+    chown authapi:authapi /usr/local/bin/wait-for-it.sh && \
     chmod 700 /usr/local/bin/entrypoint.sh && \
     chmod 700 /usr/local/bin/wait-for-it.sh
 
-# Switch to app user ( appbase )
-USER appbase
+# Switch to app user ( authapi )
+USER authapi
 
 # Expose port 9000
 EXPOSE 9000
